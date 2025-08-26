@@ -48,3 +48,19 @@ The authentication flow is implemented as follows:
 *   Build the poll voting page.
 *   Add user profiles.
 *   Add the ability to share polls.
+
+---
+
+## 6. Screenshots
+
+Here are some screenshots showing the development process and AI-assisted prompts.
+
+### AI Prompt & Response Examples
+![AI Prompt 1](screenshots/alx-polly1.png)
+![AI Prompt 2](screenshots/alx-polly2.png)
+![AI Prompt 3](screenshots/alx-polly3.png)
+
+### Application Screens
+![Screenshot 1](screenshots/screenshot1.png)
+![Screenshot 2](screenshots/screenshot2.png)
+![Screenshot 3](screenshots/screenshot3.png)
