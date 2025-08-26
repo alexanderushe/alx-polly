@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Project Description: Polly - A Next.js Polling App
 
-## Getting Started
+This document provides a detailed overview of the Polly polling application, a web app built with Next.js and Supabase.
 
-First, run the development server:
+## 1. Core Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+*   **User Authentication:** Users can register for a new account and log in to the application. Authentication is handled using Supabase Auth.
+*   **Protected Routes:** The application features protected routes that are only accessible to authenticated users.
+*   **Poll Creation:** Authenticated users can create new polls with a question and multiple options.
+*   **Poll Listing:** The application displays a list of all created polls.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 2. Technical Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+*   **Framework:** Next.js (with App Router)
+*   **Backend:** Supabase (for authentication and database)
+*   **UI:** shadcn/ui
+*   **Styling:** Tailwind CSS
+*   **Language:** TypeScript
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 3. Project Structure
 
-## Learn More
+The project follows a standard Next.js App Router structure:
 
-To learn more about Next.js, take a look at the following resources:
+*   `app/`: Contains the application's pages and routes.
+    *   `app/login/`: Login page.
+    *   `app/register/`: Registration page.
+    *   `app/polls/`: Protected routes for polls.
+        *   `app/polls/page.tsx`: Displays a list of polls.
+        *   `app/polls/new/page.tsx`: Page for creating a new poll.
+*   `components/`: Contains reusable React components.
+    *   `components/ui/`: Contains `shadcn/ui` components.
+*   `lib/`: Contains library code, such as the Supabase client and authentication context.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 4. Authentication Flow
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The authentication flow is implemented as follows:
 
-## Deploy on Vercel
+1.  **Supabase Client:** A Supabase client is initialized in `lib/supabase.ts`.
+2.  **Auth Context:** An authentication context is created in `lib/authcomponents.tsx` to provide authentication state to the application.
+3.  **Login/Register Pages:** The login and registration pages use the Supabase client to authenticate users.
+4.  **Protected Routes:** The polls page is a protected route that checks for an authenticated user before rendering.
+5.  **Navbar:** The navbar displays different links depending on the user's authentication state.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 5. Future Improvements
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*   Implement the logic to actually create a poll and store it in the database.
+*   Implement the logic to fetch and display real polls from the database.
+*   Build the poll voting page.
+*   Add user profiles.
+*   Add the ability to share polls.
