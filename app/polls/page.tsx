@@ -1,13 +1,59 @@
-'use client';
+'use client'
 
-import Navbar from '@/components/Navbar';
+import { useAuth } from '../../lib/authcomponents'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
+import { Button } from '../../components/ui/button'
+import Link from 'next/link'
+
+interface Poll {
+  id: string;
+  question: string;
+}
 
 export default function PollsPage() {
+  const { user } = useAuth()
+  const router = useRouter()
+  const [polls, setPolls] = useState<Poll[]>([])
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/login')
+    } else {
+      // Fetch polls from your backend here
+      const mockPolls: Poll[] = [
+        { id: '1', question: 'What is your favorite color?' },
+        { id: '2', question: 'What is your favorite animal?' },
+        { id: '3', question: 'What is your favorite food?' },
+      ]
+      setPolls(mockPolls)
+    }
+  }, [user, router])
+
+  if (!user) {
+    return null
+  }
+
   return (
-    <div>
-      <Navbar />
-      <h1 className="text-2xl font-bold p-4">Polls Dashboard</h1>
-      <p className="p-4">This is where polls will be listed.</p>
+    <div className="container mx-auto p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Polls</h1>
+        <Button asChild>
+          <Link href="/polls/new">Create Poll</Link>
+        </Button>
+      </div>
+      <div className="grid gap-4">
+        {polls.map((poll) => (
+          <Link key={poll.id} href={`/polls/${poll.id}`}>
+            <Card>
+              <CardHeader>
+                <CardTitle>{poll.question}</CardTitle>
+              </CardHeader>
+            </Card>
+          </Link>
+        ))}
+      </div>
     </div>
-  );
+  )
 }
