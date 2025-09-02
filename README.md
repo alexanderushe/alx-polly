@@ -69,6 +69,7 @@ Here are some screenshots showing the development process and AI-assisted prompt
 ![Screenshot 2](screenshots/screenshot2.png)
 ![Screenshot 3](screenshots/screenshot3.png)
 ![Feature Enhancement](screenshots/feature%20enhancement.png)
+![run the tests](screenshots/run%20the%20tests.png)
 
 # Reflection
 
@@ -84,3 +85,22 @@ The AI integrated the `PollResultChart` component into the main dashboard page (
 
 *   **Worked well:** The AI correctly identified the file to modify (`app/page.tsx`) and added the necessary code to display the chart.
 *   **Didn’t work well:** The user had to manually cancel the `npm run dev` command. It would be better if the AI could have provided the link and mentioned that the server is running, without hanging the session.
+
+---
+# Reflection on AI-Generated Tests
+
+## Summary
+This reflection covers the process of generating, running, and refining a test suite for the `createPoll` function using an AI assistant.
+
+### What Worked Well
+*   **Initial Test Generation:** The AI was highly effective at scaffolding a comprehensive test suite. It quickly generated unit tests for both the "happy path" (successful poll creation) and key failure cases (unauthenticated user, Supabase error).
+*   **Mocking Boilerplate:** The AI correctly identified the need to mock external dependencies (`supabase` and `auth`) and generated the necessary Jest boilerplate, which is often tedious to write manually.
+*   **Adding Test Script:** The AI successfully added the `test` script to `package.json`, making it easy to run the test suite.
+
+### What Didn't Work Well
+*   **Flawed Mocking Refinement:** The AI's first attempt to refine the mocking logic for the Supabase client was incorrect. It introduced a `ReferenceError` due to a misunderstanding of how Jest hoists `jest.mock` calls. This required a manual correction to fix the initialization order.
+*   **Clarity of Test Output:** The test for the Supabase error case correctly confirmed that an error was logged. However, the presence of a `console.error` message in the test output could be misleading, making it seem like the test run itself had an issue.
+
+### What Was Surprising
+*   **Speed and Efficiency:** The most surprising aspect was the speed at which the initial, functional test suite was created. This significantly accelerated the development workflow.
+*   **Self-Correction:** After the initial mocking error, the AI was able to understand the problem and correct its own mistake in the subsequent attempt, demonstrating a good degree of learning and adaptation.
