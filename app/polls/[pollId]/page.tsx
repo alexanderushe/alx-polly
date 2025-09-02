@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
+import { PollResultChart } from "../../../components/PollResultChart";
 
 type PollPageProps = {
   params: { pollId: string };
@@ -47,8 +48,6 @@ export default function PollPage({ params }: PollPageProps) {
     return <div>Loading...</div>;
   }
 
-  const totalVotes = voteCounts.reduce((acc, item) => acc + item.count, 0);
-
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-50">
       <Card className="w-full max-w-md">
@@ -78,26 +77,7 @@ export default function PollPage({ params }: PollPageProps) {
           ) : (
             <div className="space-y-2">
               <h2 className="text-lg font-semibold">Results</h2>
-              {poll.options.map((option: string, index: number) => {
-                const voteCount =
-                  voteCounts.find((vc) => vc.option === option)?.count || 0;
-                const percentage =
-                  totalVotes > 0 ? (voteCount / totalVotes) * 100 : 0;
-                return (
-                  <div key={index} className="space-y-1">
-                    <div className="flex justify-between">
-                      <span>{option}</span>
-                      <span>{voteCount} votes</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
-                      <div
-                        className="bg-blue-600 h-2.5 rounded-full"
-                        style={{ width: `${percentage}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                );
-              })}
+              <PollResultChart data={voteCounts} />
             </div>
           )}
         </CardContent>

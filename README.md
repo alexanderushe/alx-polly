@@ -69,3 +69,18 @@ Here are some screenshots showing the development process and AI-assisted prompt
 ![Screenshot 2](screenshots/screenshot2.png)
 ![Screenshot 3](screenshots/screenshot3.png)
 ![Feature Enhancement](screenshots/feature%20enhancement.png)
+
+# Reflection
+
+## What symbol(s) you used
+
+I used the `@` symbol to reference the file `/home/alex-ushe/alx-projects/alx-polly/components/PollResultChart.tsx`.
+
+## What the AI produced
+
+The AI integrated the `PollResultChart` component into the main dashboard page (`app/page.tsx`) and populated it with sample data to make it visible. It also correctly identified the command to run the development server.
+
+## One thing that worked well, one that didn’t
+
+*   **Worked well:** The AI correctly identified the file to modify (`app/page.tsx`) and added the necessary code to display the chart.
+*   **Didn’t work well:** The user had to manually cancel the `npm run dev` command. It would be better if the AI could have provided the link and mentioned that the server is running, without hanging the session.
