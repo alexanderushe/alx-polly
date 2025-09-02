@@ -1,38 +1,50 @@
-'use client'
+"use client";
 
-import { useAuth } from '../../lib/authcomponents'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
-import { Button } from '../../components/ui/button'
-import Link from 'next/link'
+import { useAuth } from "../../lib/authcomponents";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+import Link from "next/link";
+import { getPolls, deletePoll } from "../../lib/polls";
 
 interface Poll {
   id: string;
   question: string;
+  creator_id: string;
 }
 
 export default function PollsPage() {
-  const { user } = useAuth()
-  const router = useRouter()
-  const [polls, setPolls] = useState<Poll[]>([])
+  const { user } = useAuth();
+  const router = useRouter();
+  const [polls, setPolls] = useState<Poll[]>([]);
 
   useEffect(() => {
     if (!user) {
-      router.push('/login')
+      router.push("/login");
     } else {
-      // Fetch polls from your backend here
-      const mockPolls: Poll[] = [
-        { id: '1', question: 'What is your favorite color?' },
-        { id: '2', question: 'What is your favorite animal?' },
-        { id: '3', question: 'What is your favorite food?' },
-      ]
-      setPolls(mockPolls)
+      const fetchPolls = async () => {
+        const pollsData = await getPolls();
+        setPolls(pollsData);
+      };
+      fetchPolls();
     }
-  }, [user, router])
+  }, [user, router]);
+
+  const handleDelete = async (pollId: string) => {
+    if (window.confirm("Are you sure you want to delete this poll?")) {
+      await deletePoll(pollId);
+      setPolls(polls.filter((p) => p.id !== pollId));
+    }
+  };
 
   if (!user) {
-    return null
+    return null;
   }
 
   return (
@@ -45,15 +57,31 @@ export default function PollsPage() {
       </div>
       <div className="grid gap-4">
         {polls.map((poll) => (
-          <Link key={poll.id} href={`/polls/${poll.id}`}>
-            <Card>
-              <CardHeader>
-                <CardTitle>{poll.question}</CardTitle>
-              </CardHeader>
-            </Card>
-          </Link>
+          <Card key={poll.id}>
+            <CardHeader>
+              <CardTitle>{poll.question}</CardTitle>
+            </CardHeader>
+            <CardContent className="flex justify-end space-x-2">
+              <Link href={`/polls/${poll.id}`}>
+                <Button variant="outline">View</Button>
+              </Link>
+              {user && user.id === poll.creator_id && (
+                <>
+                  <Link href={`/polls/${poll.id}/edit`}>
+                    <Button variant="outline">Edit</Button>
+                  </Link>
+                  <Button
+                    variant="destructive"
+                    onClick={() => handleDelete(poll.id)}
+                  >
+                    Delete
+                  </Button>
+                </>
+              )}
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>
-  )
+  );
 }

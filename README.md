@@ -8,6 +8,10 @@ This document provides a detailed overview of the Polly polling application, a w
 *   **Protected Routes:** The application features protected routes that are only accessible to authenticated users.
 *   **Poll Creation:** Authenticated users can create new polls with a question and multiple options.
 *   **Poll Listing:** The application displays a list of all created polls.
+*   **Poll Voting:** Users can vote on polls.
+*   **Poll Results:** Users can see the results of a poll after voting.
+*   **My Votes:** Users can see a list of all the polls they have voted on.
+*   **Edit and Delete Polls:** Users can edit and delete the polls they have created.
 
 ## 2. Technical Stack
 
@@ -27,6 +31,9 @@ The project follows a standard Next.js App Router structure:
     *   `app/polls/`: Protected routes for polls.
         *   `app/polls/page.tsx`: Displays a list of polls.
         *   `app/polls/new/page.tsx`: Page for creating a new poll.
+        *   `app/polls/[pollId]/page.tsx`: Displays a single poll and allows voting.
+        *   `app/polls/[pollId]/edit/page.tsx`: Page for editing a poll.
+    *   `app/my-votes/`: Page that displays all the polls a user has voted on.
 *   `components/`: Contains reusable React components.
     *   `components/ui/`: Contains `shadcn/ui` components.
 *   `lib/`: Contains library code, such as the Supabase client and authentication context.
@@ -43,9 +50,6 @@ The authentication flow is implemented as follows:
 
 ## 5. Future Improvements
 
-*   Implement the logic to actually create a poll and store it in the database.
-*   Implement the logic to fetch and display real polls from the database.
-*   Build the poll voting page.
 *   Add user profiles.
 *   Add the ability to share polls.
 
@@ -64,3 +68,4 @@ Here are some screenshots showing the development process and AI-assisted prompt
 ![Screenshot 1](screenshots/screenshot1.png)
 ![Screenshot 2](screenshots/screenshot2.png)
 ![Screenshot 3](screenshots/screenshot3.png)
+![Feature Enhancement](screenshots/feature%20enhancement.png)
