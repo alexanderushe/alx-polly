@@ -53,10 +53,16 @@ export const createPoll = async (pollData: {
 };
 
 export const deletePoll = async (pollId: string) => {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error("You must be logged in to delete a poll.");
+  }
+
   const { data, error } = await supabase
     .from("polls")
     .delete()
-    .eq("id", pollId);
+    .eq("id", pollId)
+    .eq("creator_id", user.id);
 
   if (error) {
     console.error("Error deleting poll:", error);
@@ -73,10 +79,16 @@ export const updatePoll = async (
     options: string[];
   },
 ) => {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error("You must be logged in to update a poll.");
+  }
+
   const { data, error } = await supabase
     .from("polls")
     .update(pollData)
     .eq("id", pollId)
+    .eq("creator_id", user.id)
     .select();
 
   if (error) {

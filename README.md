@@ -104,3 +104,23 @@ This reflection covers the process of generating, running, and refining a test s
 ### What Was Surprising
 *   **Speed and Efficiency:** The most surprising aspect was the speed at which the initial, functional test suite was created. This significantly accelerated the development workflow.
 *   **Self-Correction:** After the initial mocking error, the AI was able to understand the problem and correct its own mistake in the subsequent attempt, demonstrating a good degree of learning and adaptation.
+
+---
+# Security Audit and Remediation
+
+This section outlines the security vulnerabilities that were identified during a recent audit and the steps taken to remediate them.
+
+## 1. Insecure Direct Object Reference (IDOR)
+
+*   **Vulnerability:** The `updatePoll` and `deletePoll` functions in `lib/polls.ts` did not verify that the user performing the action was the creator of the poll. This would allow any authenticated user to modify or delete any poll in the system.
+*   **Remediation:** The `updatePoll` and `deletePoll` functions were updated to check that the `creator_id` of the poll matches the ID of the currently authenticated user before performing the update or delete operation.
+
+## 2. Missing Authentication
+
+*   **Vulnerability:** The API endpoint at `app/api/items/route.ts` did not have any authentication checks, allowing unauthenticated users to access and create items.
+*   **Remediation:** Authentication checks were added to both the `GET` and `POST` handlers in `app/api/items/route.ts` using the `getCurrentUser` function. If a user is not authenticated, the API will now return a `401 Unauthorized` error.
+
+## 3. Cross-Site Scripting (XSS)
+
+*   **Vulnerability:** The `POST` handler in `app/api/items/route.ts` did not sanitize the `name` and `description` fields, which could allow an attacker to inject malicious scripts into the application.
+*   **Remediation:** A basic sanitization function was added to the `POST` handler to escape HTML characters in the `name` and `description` fields before they are stored. This prevents the execution of any injected scripts.
