@@ -3,9 +3,8 @@
 import { useAuth } from '../../lib/authcomponents'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
+import { Card, CardHeader, CardTitle } from '../../components/ui/card'
 import Link from 'next/link'
-import { getVotedPolls } from '../../lib/votes'
 
 interface Poll {
   id: string;
@@ -22,8 +21,11 @@ export default function MyVotesPage() {
       router.push('/login')
     } else {
       const fetchPolls = async () => {
-        const pollsData = await getVotedPolls();
-        setPolls(pollsData);
+        const response = await fetch('/api/my-votes');
+        const data = await response.json();
+        if (data.success) {
+          setPolls(data.data);
+        }
       }
       fetchPolls();
     }

@@ -48,14 +48,21 @@ The authentication flow is implemented as follows:
 4.  **Protected Routes:** The polls page is a protected route that checks for an authenticated user before rendering.
 5.  **Navbar:** The navbar displays different links depending on the user's authentication state.
 
-## 5. Future Improvements
+## 5. API Route Conversion
+
+Previously, the application used server actions to interact with the database. These server actions have been converted to API routes to provide a more traditional and scalable architecture. The following conversions were made:
+
+*   The functions in `lib/polls.ts` were converted to API routes in `app/api/polls/` and `app/api/polls/[pollId]/`.
+*   The `getVotedPolls` function in `lib/votes.ts` was converted to an API route in `app/api/my-votes/`.
+
+## 6. Future Improvements
 
 *   Add user profiles.
 *   Add the ability to share polls.
 
 ---
 
-## 6. Screenshots
+## 7. Screenshots
 
 Here are some screenshots showing the development process and AI-assisted prompts.
 
@@ -70,6 +77,7 @@ Here are some screenshots showing the development process and AI-assisted prompt
 ![Screenshot 3](screenshots/screenshot3.png)
 ![Feature Enhancement](screenshots/feature%20enhancement.png)
 ![run the tests](screenshots/run%20the%20tests.png)
+![New Feature](screenshots/Screenshot%20from%202025-09-12%2012-21-37.png)
 
 # Reflection
 
