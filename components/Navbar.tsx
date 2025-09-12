@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useAuth } from "../lib/authcomponents";
+import { useUser } from "../lib/user";
 import { supabase } from "../lib/supabase";
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
-  const { user } = useAuth();
+  const { user } = useUser();
   const router = useRouter();
 
   const handleLogout = async () => {

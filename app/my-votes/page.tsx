@@ -1,6 +1,6 @@
 'use client'
 
-import { useAuth } from '../../lib/authcomponents'
+import { useUser } from '../../lib/user'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle } from '../../components/ui/card'
@@ -12,7 +12,7 @@ interface Poll {
 }
 
 export default function MyVotesPage() {
-  const { user } = useAuth()
+  const { user } = useUser()
   const router = useRouter()
   const [polls, setPolls] = useState<Poll[]>([])
 
