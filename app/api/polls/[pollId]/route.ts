@@ -5,7 +5,7 @@ import { getCurrentUser } from "../../../../lib/auth";
 // GET /api/polls/[pollId] - Retrieve a single poll
 export async function GET(
   request: NextRequest,
-  { params }: { params: { pollId: string } },
+  { params }: { params: Promise<{ pollId: string }> },
 ) {
   try {
     const user = await getCurrentUser();
@@ -16,7 +16,8 @@ export async function GET(
       );
     }
 
-    const poll = await getPoll(params.pollId);
+    const { pollId } = await params;
+    const poll = await getPoll(pollId);
 
     if (!poll) {
       return NextResponse.json(
@@ -43,7 +44,7 @@ export async function GET(
 // PUT /api/polls/[pollId] - Update a poll
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { pollId: string } },
+  { params }: { params: Promise<{ pollId: string }> },
 ) {
   try {
     const user = await getCurrentUser();
@@ -54,6 +55,7 @@ export async function PUT(
       );
     }
 
+    const { pollId } = await params;
     const body = await request.json();
 
     if (!body.question || typeof body.question !== "string") {
@@ -66,30 +68,35 @@ export async function PUT(
       );
     }
 
-    if (!body.options || !Array.isArray(body.options) || body.options.length < 2) {
+    if (
+      !body.options ||
+      !Array.isArray(body.options) ||
+      body.options.length < 2
+    ) {
       return NextResponse.json(
         {
           success: false,
-          error: "Options are required and must be an array of at least 2 strings",
+          error:
+            "Options are required and must be an array of at least 2 strings",
         },
         { status: 400 },
       );
     }
 
-    const updatedPoll = await updatePoll(params.pollId, {
+    const updatedPoll = await updatePoll(pollId, {
       question: body.question,
       options: body.options,
     });
 
     if (updatedPoll.error) {
-        return NextResponse.json(
-            {
-              success: false,
-              error: "Failed to update poll",
-              details: updatedPoll.error.message,
-            },
-            { status: 500 },
-          );
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Failed to update poll",
+          details: updatedPoll.error.message,
+        },
+        { status: 500 },
+      );
     }
 
     return NextResponse.json(
@@ -114,7 +121,7 @@ export async function PUT(
 // DELETE /api/polls/[pollId] - Delete a poll
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { pollId: string } },
+  { params }: { params: Promise<{ pollId: string }> },
 ) {
   try {
     const user = await getCurrentUser();
@@ -125,17 +132,18 @@ export async function DELETE(
       );
     }
 
-    const deletedPoll = await deletePoll(params.pollId);
+    const { pollId } = await params;
+    const deletedPoll = await deletePoll(pollId);
 
     if (deletedPoll.error) {
-        return NextResponse.json(
-            {
-              success: false,
-              error: "Failed to delete poll",
-              details: deletedPoll.error.message,
-            },
-            { status: 500 },
-          );
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Failed to delete poll",
+          details: deletedPoll.error.message,
+        },
+        { status: 500 },
+      );
     }
 
     return NextResponse.json(

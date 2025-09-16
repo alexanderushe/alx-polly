@@ -24,7 +24,7 @@ interface VoteWithPoll extends Vote {
 }
 
 export default function MyVotesPage() {
-  const { user } = useUser();
+  const { user, loading: authLoading } = useUser();
   const router = useRouter();
   const [votes, setVotes] = useState<VoteWithPoll[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,8 +33,12 @@ export default function MyVotesPage() {
   const [sortBy, setSortBy] = useState<"date" | "question">("date");
 
   useEffect(() => {
-    if (!user) {
+    if (!authLoading && !user) {
       router.push("/login");
+      return;
+    }
+
+    if (authLoading || !user) {
       return;
     }
 
