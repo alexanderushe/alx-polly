@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { getPoll } from "../../../lib/polls";
-import { castVote, getVoteCounts } from "../../../lib/votes";
+import { castVote } from "../../../lib/votes";
 import { Button } from "../../../components/ui/button";
 import {
   Card,
@@ -10,22 +10,16 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
-import { PollResultChart } from "../../../components/PollResultChart";
+import VoteResult from "../../../components/VoteResult";
 
 type PollPageProps = {
   params: { pollId: string };
 };
 
-interface VoteCount {
-  option: string;
-  count: number;
-}
-
 export default function PollPage({ params }: PollPageProps) {
   const [poll, setPoll] = useState<any>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [voted, setVoted] = useState(false);
-  const [voteCounts, setVoteCounts] = useState<VoteCount[]>([]);
 
   useEffect(() => {
     const fetchPoll = async () => {
@@ -39,8 +33,6 @@ export default function PollPage({ params }: PollPageProps) {
     if (selectedOption) {
       setVoted(true);
       await castVote(params.pollId, selectedOption);
-      const counts = await getVoteCounts(params.pollId);
-      setVoteCounts(counts);
     }
   };
 
@@ -75,10 +67,7 @@ export default function PollPage({ params }: PollPageProps) {
               </Button>
             </div>
           ) : (
-            <div className="space-y-2">
-              <h2 className="text-lg font-semibold">Results</h2>
-              <PollResultChart data={voteCounts} />
-            </div>
+            <VoteResult pollId={params.pollId} />
           )}
         </CardContent>
       </Card>

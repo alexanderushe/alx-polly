@@ -169,6 +169,23 @@ app.get("/items/:id", (req, res) => {
   }
 });
 
+// Placeholder routes for reported 404s
+app.all("/auth/notifications", (req, res) => {
+  sendSuccess(res, { notifications: [] });
+});
+app.all("/auth/history", (req, res) => {
+  sendSuccess(res, { history: [] });
+});
+app.all("/cards/list", (req, res) => {
+  sendSuccess(res, { cards: [] });
+});
+app.all("/auth/balance", (req, res) => {
+  sendSuccess(res, { balance: "0.00" });
+});
+app.all("/auth/kyc-status", (req, res) => {
+  sendSuccess(res, { kycStatus: "verified" });
+});
+
 // 404 handler for undefined routes
 app.use("*", (req, res) => {
   sendError(res, 404, "Route not found");

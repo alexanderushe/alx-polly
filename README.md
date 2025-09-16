@@ -1,3 +1,4 @@
+
 # Project Description: Polly - A Next.js Polling App
 
 This document provides a detailed overview of the Polly polling application, a web app built with Next.js and Supabase.
@@ -7,11 +8,16 @@ This document provides a detailed overview of the Polly polling application, a w
 *   **User Authentication:** Users can register for a new account and log in to the application. Authentication is handled using Supabase Auth.
 *   **Protected Routes:** The application features protected routes that are only accessible to authenticated users.
 *   **Poll Creation:** Authenticated users can create new polls with a question and multiple options.
+*   **Scheduled Polls:** Users can set a start and end time for their polls, allowing them to open and close automatically.
 *   **Poll Listing:** The application displays a list of all created polls.
 *   **Poll Voting:** Users can vote on polls.
-*   **Poll Results:** Users can see the results of a poll after voting.
+*   **Poll Results:** Users can see the results of a poll after voting, displayed in a bar chart.
 *   **My Votes:** Users can see a list of all the polls they have voted on.
 *   **Edit and Delete Polls:** Users can edit and delete the polls they have created.
+
+## Scheduled Polls
+
+Users can schedule polls to run at a specific time by setting a start and end time. This allows for automated control over when a poll is open for voting. When creating or editing a poll, users are presented with options to set the start and end times. If no times are set, the poll is open indefinitely.
 
 ## 2. Technical Stack
 

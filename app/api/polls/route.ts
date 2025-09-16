@@ -66,17 +66,19 @@ export async function POST(request: NextRequest) {
     const newPoll = await createPoll({
       question: body.question,
       options: body.options,
+      start_time: body.start_time,
+      end_time: body.end_time,
     });
 
     if (newPoll.error) {
-        return NextResponse.json(
-            {
-              success: false,
-              error: "Failed to create poll",
-              details: newPoll.error.message,
-            },
-            { status: 500 },
-          );
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Failed to create poll",
+          details: newPoll.error, // Use newPoll.error directly
+        },
+        { status: 500 },
+      );
     }
 
     return NextResponse.json(

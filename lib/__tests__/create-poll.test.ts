@@ -62,6 +62,8 @@ describe("createPoll", () => {
     const pollData = {
       question: "What is your favorite color?",
       options: ["Red", "Green", "Blue"],
+      start_time: "2025-09-15T10:00:00.000Z",
+      end_time: "2025-09-16T10:00:00.000Z",
     };
 
     const expectedPoll = {
@@ -88,6 +90,8 @@ describe("createPoll", () => {
         question: pollData.question,
         options: pollData.options,
         creator_id: mockUser.id,
+        start_time: pollData.start_time,
+        end_time: pollData.end_time,
       },
     ]);
     expect(supabaseSelect).toHaveBeenCalledTimes(1);
@@ -124,10 +128,7 @@ describe("createPoll", () => {
       code: "12345",
     };
 
-    supabaseSelect.mockResolvedValue({
-      data: null,
-      error: supabaseError,
-    });
+    supabaseSelect.mockResolvedValue({ data: null, error: supabaseError });
 
     const result = await createPoll(pollData);
 
@@ -143,6 +144,8 @@ describe("createPoll", () => {
     const pollData = {
       question: "Another test poll",
       options: ["Yes", "No"],
+      start_time: "2025-09-15T10:00:00.000Z",
+      end_time: "2025-09-16T10:00:00.000Z",
     };
 
     supabaseSelect.mockResolvedValue({
@@ -157,6 +160,8 @@ describe("createPoll", () => {
         question: pollData.question,
         options: pollData.options,
         creator_id: mockUser.id,
+        start_time: pollData.start_time,
+        end_time: pollData.end_time,
       },
     ]);
   });
