@@ -20,21 +20,21 @@ interface Poll {
 }
 
 export default function PollsPage() {
-  const { user } = useUser();
+  const { user, loading } = useUser();
   const router = useRouter();
   const [polls, setPolls] = useState<Poll[]>([]);
 
   useEffect(() => {
-    if (!user) {
+    if (!loading && !user) {
       router.push("/login");
-    } else {
+    } else if (!loading && user) {
       const fetchPolls = async () => {
         const pollsData = await getPolls();
         setPolls(pollsData);
       };
       fetchPolls();
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
   const handleDelete = async (pollId: string) => {
     if (window.confirm("Are you sure you want to delete this poll?")) {
@@ -42,6 +42,17 @@ export default function PollsPage() {
       setPolls(polls.filter((p) => p.id !== pollId));
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!user) {
     return null;

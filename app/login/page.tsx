@@ -20,13 +20,13 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const { user } = useUser();
+  const { user, loading } = useUser();
 
   useEffect(() => {
-    if (user) {
+    if (!loading && user) {
       router.push("/polls");
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,6 +40,17 @@ export default function LoginPage() {
       router.push("/polls");
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center items-center h-screen">

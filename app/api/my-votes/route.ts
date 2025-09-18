@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "../../../lib/auth";
-import { supabase } from "../../../lib/supabase";
+import { getUserVotes } from "../../../lib/votes";
 
 export async function GET() {
   try {
@@ -12,36 +12,18 @@ export async function GET() {
       );
     }
 
-    const { data, error } = await supabase
-      .from("votes")
-      .select("polls (*)")
-      .eq("voter_id", user.id);
-
-    if (error) {
-      console.error("Error getting voted polls:", error);
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Failed to retrieve voted polls",
-        },
-        { status: 500 },
-      );
-    }
-
-    const polls = data
-      .map((v) => v.polls)
-      .flat()
-      .filter((p) => p !== null);
+    const votes = await getUserVotes();
 
     return NextResponse.json({
       success: true,
-      data: polls,
+      data: votes,
     });
   } catch (error) {
+    console.error("Error getting user votes:", error);
     return NextResponse.json(
       {
         success: false,
-        error: "Failed to retrieve voted polls",
+        error: "Failed to retrieve your votes",
       },
       { status: 500 },
     );
