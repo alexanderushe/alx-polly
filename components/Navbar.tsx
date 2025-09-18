@@ -29,9 +29,12 @@ export default function Navbar() {
       <Link href="/polls">Polls</Link>
       <Link href="/my-votes">My Votes</Link>
       {user && <Link href="/polls/new">New Poll</Link>}
-      <Link href="/debug" className="text-red-600 font-bold">
-        Debug
-      </Link>
+      {user && <Link href="/poll-api-demo">API Demo</Link>}
+      {user && (
+        <Link href="/debug" className="text-red-600 font-bold">
+          Debug
+        </Link>
+      )}
       {!user ? (
         <Link href="/login">Login</Link>
       ) : (
