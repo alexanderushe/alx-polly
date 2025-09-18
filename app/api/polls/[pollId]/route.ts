@@ -2,12 +2,32 @@ import { NextRequest, NextResponse } from "next/server";
 import { getPoll, updatePoll, deletePoll } from "../../../../lib/polls";
 import { getCurrentUser } from "../../../../lib/auth";
 
-// GET /api/polls/[pollId] - Retrieve a single poll
+/**
+ * Poll Detail API Endpoint
+ *
+ * Handles CRUD operations for individual polls including retrieval, updates, and deletion.
+ * All operations require authentication and appropriate permissions.
+ *
+ * @route GET /api/polls/[pollId] - Retrieve a single poll
+ * @route PUT /api/polls/[pollId] - Update a poll
+ * @route DELETE /api/polls/[pollId] - Delete a poll
+ *
+ * @param pollId - The unique identifier of the poll (from URL parameters)
+ */
+
+/**
+ * Retrieves a single poll by ID
+ *
+ * @param request - The HTTP request object
+ * @param params - URL parameters containing pollId
+ * @returns JSON response with poll data or error message
+ */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { pollId: string } },
+  { params }: { params: Promise<{ pollId: string }> },
 ) {
   try {
+    const resolvedParams = await params;
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json(
@@ -16,7 +36,7 @@ export async function GET(
       );
     }
 
-    const poll = await getPoll(params.pollId);
+    const poll = await getPoll(resolvedParams.pollId);
 
     if (!poll) {
       return NextResponse.json(
@@ -43,9 +63,10 @@ export async function GET(
 // PUT /api/polls/[pollId] - Update a poll
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { pollId: string } },
+  { params }: { params: Promise<{ pollId: string }> },
 ) {
   try {
+    const resolvedParams = await params;
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json(
@@ -66,30 +87,35 @@ export async function PUT(
       );
     }
 
-    if (!body.options || !Array.isArray(body.options) || body.options.length < 2) {
+    if (
+      !body.options ||
+      !Array.isArray(body.options) ||
+      body.options.length < 2
+    ) {
       return NextResponse.json(
         {
           success: false,
-          error: "Options are required and must be an array of at least 2 strings",
+          error:
+            "Options are required and must be an array of at least 2 strings",
         },
         { status: 400 },
       );
     }
 
-    const updatedPoll = await updatePoll(params.pollId, {
+    const updatedPoll = await updatePoll(resolvedParams.pollId, {
       question: body.question,
       options: body.options,
     });
 
     if (updatedPoll.error) {
-        return NextResponse.json(
-            {
-              success: false,
-              error: "Failed to update poll",
-              details: updatedPoll.error.message,
-            },
-            { status: 500 },
-          );
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Failed to update poll",
+          details: updatedPoll.error.message,
+        },
+        { status: 500 },
+      );
     }
 
     return NextResponse.json(
@@ -114,9 +140,10 @@ export async function PUT(
 // DELETE /api/polls/[pollId] - Delete a poll
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { pollId: string } },
+  { params }: { params: Promise<{ pollId: string }> },
 ) {
   try {
+    const resolvedParams = await params;
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json(
@@ -125,17 +152,17 @@ export async function DELETE(
       );
     }
 
-    const deletedPoll = await deletePoll(params.pollId);
+    const deletedPoll = await deletePoll(resolvedParams.pollId);
 
     if (deletedPoll.error) {
-        return NextResponse.json(
-            {
-              success: false,
-              error: "Failed to delete poll",
-              details: deletedPoll.error.message,
-            },
-            { status: 500 },
-          );
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Failed to delete poll",
+          details: deletedPoll.error.message,
+        },
+        { status: 500 },
+      );
     }
 
     return NextResponse.json(
