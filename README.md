@@ -1,3 +1,4 @@
+
 # Project Description: Polly - A Next.js Polling App
 
 This document provides a detailed overview of the Polly polling application, a web app built with Next.js and Supabase.
@@ -7,11 +8,16 @@ This document provides a detailed overview of the Polly polling application, a w
 *   **User Authentication:** Users can register for a new account and log in to the application. Authentication is handled using Supabase Auth.
 *   **Protected Routes:** The application features protected routes that are only accessible to authenticated users.
 *   **Poll Creation:** Authenticated users can create new polls with a question and multiple options.
+*   **Scheduled Polls:** Users can set a start and end time for their polls, allowing them to open and close automatically.
 *   **Poll Listing:** The application displays a list of all created polls.
 *   **Poll Voting:** Users can vote on polls.
-*   **Poll Results:** Users can see the results of a poll after voting.
+*   **Poll Results:** Users can see the results of a poll after voting, displayed in a bar chart.
 *   **My Votes:** Users can see a list of all the polls they have voted on.
 *   **Edit and Delete Polls:** Users can edit and delete the polls they have created.
+
+## Scheduled Polls
+
+Users can schedule polls to run at a specific time by setting a start and end time. This allows for automated control over when a poll is open for voting. When creating or editing a poll, users are presented with options to set the start and end times. If no times are set, the poll is open indefinitely.
 
 ## 2. Technical Stack
 
@@ -132,7 +138,6 @@ This section outlines the security vulnerabilities that were identified during a
 
 *   **Vulnerability:** The `POST` handler in `app/api/items/route.ts` did not sanitize the `name` and `description` fields, which could allow an attacker to inject malicious scripts into the application.
 *   **Remediation:** A basic sanitization function was added to the `POST` handler to escape HTML characters in the `name` and `description` fields before they are stored. This prevents the execution of any injected scripts.
-
 ## Database Queries
 
 This section provides an overview of the database queries that were performed to retrieve poll data.
@@ -143,22 +148,4 @@ A simple query was executed to retrieve all polls from the `polls` table.
 
 ```sql
 SELECT * FROM polls;
-```
 
-### Get All Polls with Creator Information
-
-A more advanced query was executed to retrieve all polls along with the creator's email address. This was achieved by joining the `polls` table with the `auth.users` table.
-
-```sql
-SELECT
-  p.id,
-  p.question,
-  p.options,
-  u.email AS creator_email
-FROM
-  polls p
-JOIN
-  auth.users u ON p.creator_id = u.id;
-```
-
-![Screenshot of queries](Screenshot%20from%202025-09-18%2019-59-33.png)
