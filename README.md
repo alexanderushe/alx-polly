@@ -69,7 +69,7 @@ Previously, the application used server actions to interact with the database. T
 ---
 
 ## 7. Screenshots
-
+ 
 Here are some screenshots showing the development process and AI-assisted prompts.
 
 ### AI Prompt & Response Examples
@@ -138,3 +138,14 @@ This section outlines the security vulnerabilities that were identified during a
 
 *   **Vulnerability:** The `POST` handler in `app/api/items/route.ts` did not sanitize the `name` and `description` fields, which could allow an attacker to inject malicious scripts into the application.
 *   **Remediation:** A basic sanitization function was added to the `POST` handler to escape HTML characters in the `name` and `description` fields before they are stored. This prevents the execution of any injected scripts.
+## Database Queries
+
+This section provides an overview of the database queries that were performed to retrieve poll data.
+
+### Get All Polls
+
+A simple query was executed to retrieve all polls from the `polls` table.
+
+```sql
+SELECT * FROM polls;
+
